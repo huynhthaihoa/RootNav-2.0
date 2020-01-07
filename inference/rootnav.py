@@ -2,6 +2,7 @@ import sys, os
 import torch
 import argparse
 from models import ModelLoader
+from glob import glob
 from run_rootnav import run_rootnav, list_action, info_action
 
 if __name__ == '__main__':
@@ -27,6 +28,20 @@ if __name__ == '__main__':
         parser.print_help()
         exit()
 
+    # Validate and scan input directory
+    fileExtensions = set([".JPG", ".JPEG", ".PNG", ".TIF", ".TIFF", ".BMP" ])
+    files = glob(os.path.join(args.input_dir, "*.*"))
+    input_files = []
+    for file in files:
+        extension = os.path.splitext(file)[1].upper()
+        if extension in fileExtensions:
+            input_files.append(file)
+
+    # No files to process
+    if len(input_files) == 0:
+        print("No input image files found.")
+        exit()
+
     # Check cuda configuration and notify if cuda is unavailable but they are trying to use it
     if not torch.cuda.is_available() and not args.no_cuda:
         print ("Cuda is not available, switching to CPU")
@@ -43,4 +58,4 @@ if __name__ == '__main__':
         exit()
 
     # Process
-    run_rootnav(model_data, use_cuda, use_crf, args.input_dir, args.output_dir, args.no_segmentation_images)
+    run_rootnav(model_data, use_cuda, use_crf, input_files, args.output_dir, args.no_segmentation_images)
