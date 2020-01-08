@@ -35,7 +35,9 @@ if __name__ == '__main__':
     for file in files:
         extension = os.path.splitext(file)[1].upper()
         if extension in fileExtensions:
-            input_files.append(file)
+            name = os.path.basename(file)
+            key = os.path.splitext(name)[0]
+            input_files.append((key,file))
 
     # No files to process
     if len(input_files) == 0:

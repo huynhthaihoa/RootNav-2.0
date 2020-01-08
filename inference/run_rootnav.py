@@ -34,12 +34,12 @@ def run_rootnav(model_data, use_cuda, use_crf, input_files, output_dir, no_segme
     normalisation_scale = net_config['scale']
 
     # Process each supplied file in turn
-    for file in input_files:
+    for keyvalue in input_files:
         t0 = time.time()
-        name = os.path.basename(file)
-        key = os.path.splitext(name)[0]
+        key = keyvalue[0]
+        file = keyvalue[1]
 
-        print ('Now Reading {0}'.format(name))
+        print ('Now Reading {0}'.format(key))
         sys.stdout.flush()
         img = misc.imread(file)
 
