@@ -69,7 +69,7 @@ weights = [0.0007,1.6246,0.7223,0.1789,1.748,12.9261] #[0.0021,0.1861,2.3898,0.6
 def train(args):
     # Load Config
     with open(args.config) as fp:
-        cfg = yaml.load(fp)
+        cfg = yaml.safe_load(fp)
 
     # Create log and output directory
     run_id = random.randint(1,100000)
